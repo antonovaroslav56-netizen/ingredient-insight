@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>БАДы для похудения: маркетинг или наука? — Комарова Ярослава, 2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;700;900&family=Manrope:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --teal:      #00C4C4;
+    --teal-d:    #007A7A;
+    --teal-dim:  rgba(0,196,196,0.12);
+    --green:     #00C87A;
+    --green-dim: rgba(0,200,122,0.1);
+    --green-b:   rgba(0,200,122,0.25);
+    --yellow:    #FFB800;
+    --yellow-dim:rgba(255,184,0,0.09);
+    --yellow-b:  rgba(255,184,0,0.28);
+    --red:       #FF3D55;
+    --red-dim:   rgba(255,61,85,0.09);
+    --red-b:     rgba(255,61,85,0.28);
+    --dark:      #0B0F18;
+    --dark2:     #111828;
+    --dark3:     #182030;
+    --border:    rgba(255,255,255,0.07);
+    --text:      #E2E8F5;
+    --muted:     #8A95A8;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Manrope', sans-serif;
+    background: var(--dark);
+    color: var(--text);
+    line-height: 1.75;
+    overflow-x: hidden;
+  }
+
+  /* noise grain */
+  body::after {
+    content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 999;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    opacity: .5;
+  }
+
+  /* ── progress ── */
+  #bar { position: fixed; top: 0; left: 0; height: 2px; width: 0;
+    background: linear-gradient(90deg, var(--teal), var(--green));
+    box-shadow: 0 0 10px var(--teal); z-index: 200; transition: width .08s linear; }
+
+  /* ── nav ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; height: 52px;
+    background: rgba(11,15,24,.88); backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border); z-index: 100;
+    display: flex; align-items: center; padding: 0 32px; gap: 28px;
+  }
+  .nav-brand {
+    font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 900;
+    color: var(--teal); letter-spacing: 1px; white-space: nowrap; flex-shrink: 0;
+  }
+  .nav-links { display: flex; gap: 20px; overflow-x: auto; scrollbar-width: none; }
+  nav a { font-size: 11px; font-weight: 600; letter-spacing: .6px; color: var(--muted);
+    text-decoration: none; text-transform: uppercase; white-space: nowrap; transition: color .2s; }
+  nav a:hover { color: var(--teal); }
+
+  /* ── layout ── */
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 28px; position: relative; z-index: 1; }
+
+  /* ── hero ── */
+  .hero {
+    min-height: 100vh; display: flex; flex-direction: column; justify-content: center;
+    padding-top: 72px; position: relative; overflow: hidden;
+  }
+  .hero-glow {
+    position: absolute; inset: 0; pointer-events: none;
+    background:
+      radial-gradient(ellipse 70% 55% at 15% 50%, rgba(0,196,196,.13) 0%, transparent 60%),
+      radial-gradient(ellipse 50% 70% at 85% 15%, rgba(0,200,122,.08) 0%, transparent 55%),
+      radial-gradient(ellipse 35% 35% at 65% 85%, rgba(255,61,85,.06) 0%, transparent 50%);
+  }
+
+  /* floating shapes */
+  .shape {
+    position: absolute; border-radius: 12px; opacity: .12;
+    animation: drift 9s ease-in-out infinite;
+  }
+  .s1{width:110px;height:44px;background:var(--teal);top:14%;right:7%;animation-delay:0s;transform:rotate(-8deg)}
+  .s2{width:70px; height:28px;background:var(--green);top:38%;right:18%;animation-delay:2.5s;transform:rotate(5deg)}
+  .s3{width:54px; height:22px;background:var(--red);bottom:22%;right:10%;animation-delay:5s;transform:rotate(-3deg)}
+  .s4{width:90px; height:36px;background:var(--yellow);bottom:38%;left:4%;animation-delay:1.2s;transform:rotate(6deg)}
+  .s5{width:40px; height:40px;background:var(--teal);top:65%;left:8%;border-radius:50%;animation-delay:3.5s}
+  @keyframes drift {
+    0%,100%{transform:translateY(0) rotate(-6deg)} 50%{transform:translateY(-18px) rotate(4deg)}
+  }
+  .s1,.s2,.s3,.s4,.s5 { animation-name: drift; }
+
+  .hero-school {
+    font-size: 12px; font-weight: 600; color: var(--muted);
+    letter-spacing: .5px; margin-bottom: 28px; line-height: 1.5;
+  }
+  .hero-tag {
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 700;
+    color: var(--teal); letter-spacing: 3px; text-transform: uppercase;
+    margin-bottom: 20px; display: flex; align-items: center; gap: 10px;
+  }
+  .hero-tag::before { content:''; width:28px; height:2px; background:var(--teal); box-shadow:0 0 6px var(--teal); }
+
+  .hero h1 {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(34px, 5.5vw, 68px);
+    font-weight: 900; line-height: 1.05; margin-bottom: 14px;
+  }
+  .hero h1 em {
+    font-style: normal;
+    background: linear-gradient(130deg, var(--teal), var(--green));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .hero-sub {
+    font-size: 17px; font-weight: 400; color: var(--muted);
+    max-width: 520px; line-height: 1.7; margin-bottom: 16px;
+  }
+  .hero-author {
+    font-size: 13px; color: var(--muted); margin-bottom: 44px;
+  }
+  .hero-author strong { color: var(--text); }
+
+  .kpi-row { display: flex; gap: 36px; flex-wrap: wrap; margin-bottom: 52px; }
+  .kpi { display: flex; flex-direction: column; gap: 3px; }
+  .kpi-n {
+    font-family: 'Unbounded', sans-serif; font-size: 38px; font-weight: 900;
+    background: linear-gradient(130deg, var(--teal), var(--green));
+    -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+  }
+  .kpi-l { font-size: 12px; color: var(--muted); font-weight: 600; max-width: 130px; line-height: 1.4; }
+
+  .down-hint { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: 12px;
+    animation: bob 2.2s ease-in-out infinite; }
+  .down-hint svg { width:18px; height:18px; }
+  @keyframes bob { 0%,100%{transform:translateY(0)} 50%{transform:translateY(7px)} }
+
+  /* ── sections ── */
+  section { padding: 72px 0; }
+  section + section { border-top: 1px solid var(--border); }
+
+  .s-tag {
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 700;
+    color: var(--teal); letter-spacing: 2.5px; text-transform: uppercase;
+    margin-bottom: 10px; display: flex; align-items: center; gap: 9px;
+  }
+  .s-tag::before { content:''; width:18px; height:2px; background:var(--teal); }
+
+  h2.title {
+    font-family: 'Unbounded', sans-serif;
+    font-size: clamp(20px, 3vw, 30px); font-weight: 800; line-height: 1.2;
+    margin-bottom: 28px;
+  }
+  h3.sub {
+    font-family: 'Unbounded', sans-serif; font-size: 14px; font-weight: 800;
+    margin: 36px 0 14px; color: var(--text);
+  }
+  p.body {
+    font-size: 15px; color: var(--muted); line-height: 1.85;
+    margin-bottom: 14px; text-align: justify;
+  }
+  p.body strong { color: var(--text); }
+
+  /* quote */
+  .q {
+    border-left: 3px solid var(--teal); padding: 18px 24px;
+    background: var(--teal-dim); border-radius: 0 10px 10px 0;
+    margin: 22px 0;
+  }
+  .q p { font-size: 15px; font-style: italic; color: var(--text); line-height: 1.7; }
+
+  /* bullet list */
+  ul.bl { list-style: none; display: flex; flex-direction: column; gap: 9px; margin: 12px 0; }
+  ul.bl li {
+    padding-left: 20px; position: relative;
+    font-size: 15px; color: var(--muted); line-height: 1.7;
+  }
+  ul.bl li::before {
+    content: '—'; position: absolute; left: 0;
+    color: var(--teal); font-weight: 700;
+  }
+  ul.bl li strong { color: var(--text); }
+
+  /* cards grid */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 14px; margin-top: 22px; }
+  .card {
+    background: var(--dark2); border: 1px solid var(--border);
+    border-radius: 14px; padding: 22px;
+    transition: transform .22s, box-shadow .22s, border-color .22s;
+  }
+  .card:hover { transform: translateY(-4px); box-shadow: 0 12px 36px rgba(0,196,196,.07); border-color: rgba(0,196,196,.25); }
+  .card-ico { font-size: 26px; margin-bottom: 10px; }
+  .card h4 { font-size: 13.5px; font-weight: 700; margin-bottom: 7px; }
+  .card p  { font-size: 13px; color: var(--muted); line-height: 1.65; }
+
+  /* compare table */
+  .tbl-wrap { overflow-x: auto; margin: 22px 0; border-radius: 12px; border: 1px solid var(--border); }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  thead th {
+    background: var(--dark3); padding: 13px 16px; text-align: left;
+    font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 700;
+    letter-spacing: 1px; text-transform: uppercase; color: var(--muted);
+    border-bottom: 1px solid var(--border);
+  }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background .15s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: rgba(255,255,255,.025); }
+  tbody td { padding: 12px 16px; color: var(--muted); line-height: 1.6; vertical-align: top; }
+  tbody td:first-child { color: var(--text); font-weight: 600; }
+  .c-drug { color: #5FC8FF !important; }
+  .c-bad  { color: var(--yellow) !important; }
+
+  /* zone blocks */
+  .zone { border-radius: 16px; padding: 28px; margin-bottom: 20px; }
+  .zone-g { background: var(--green-dim); border: 1px solid var(--green-b); }
+  .zone-y { background: var(--yellow-dim); border: 1px solid var(--yellow-b); }
+  .zone-r { background: var(--red-dim);   border: 1px solid var(--red-b); }
+
+  .zone-head { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; }
+  .zone-emo  { font-size: 26px; }
+  .zone-name {
+    font-family: 'Unbounded', sans-serif; font-size: 12px; font-weight: 900;
+    text-transform: uppercase; letter-spacing: .5px;
+  }
+  .zone-g .zone-name { color: var(--green); }
+  .zone-y .zone-name { color: var(--yellow); }
+  .zone-r .zone-name { color: var(--red); }
+  .zone-desc { font-size: 13px; color: var(--muted); font-style: italic; margin-bottom: 18px; line-height: 1.65; }
+
+  /* ingredient rows */
+  .ingr-hdr {
+    display: grid; grid-template-columns: 170px 1fr 1fr;
+    gap: 14px; padding: 0 14px 8px;
+    font-size: 10px; font-weight: 700; letter-spacing: 1.2px;
+    text-transform: uppercase; color: var(--muted);
+    border-bottom: 1px solid var(--border); margin-bottom: 6px;
+  }
+  .ingr-list { display: flex; flex-direction: column; gap: 10px; }
+  .ingr {
+    display: grid; grid-template-columns: 170px 1fr 1fr;
+    gap: 14px; padding: 13px 14px;
+    background: rgba(255,255,255,.03); border-radius: 9px;
+    font-size: 13.5px;
+  }
+  .ingr-n { font-weight: 700; }
+  .zone-g .ingr-n { color: var(--green); }
+  .zone-y .ingr-n { color: var(--yellow); }
+  .zone-r .ingr-n { color: var(--red); }
+  .ingr-e, .ingr-r { color: var(--muted); line-height: 1.6; }
+
+  /* warning strip */
+  .warn {
+    display: flex; align-items: flex-start; gap: 12px;
+    background: rgba(255,61,85,.1); border: 1px solid rgba(255,61,85,.25);
+    border-radius: 10px; padding: 16px 20px; margin-bottom: 18px;
+  }
+  .warn-ico { font-size: 20px; flex-shrink: 0; }
+  .warn-txt { font-size: 13.5px; line-height: 1.65; color: var(--muted); }
+  .warn-txt strong { color: var(--red); }
+
+  /* zone badge */
+  .zbadge {
+    display: inline-flex; align-items: center; gap: 4px;
+    padding: 3px 10px; border-radius: 99px;
+    font-size: 11.5px; font-weight: 700;
+  }
+  .zb-g { background: rgba(0,200,122,.14); color: var(--green); }
+  .zb-y { background: rgba(255,184,0,.14); color: var(--yellow); }
+  .zb-r { background: rgba(255,61,85,.14); color: var(--red); }
+
+  /* survey */
+  .survey-duo { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 20px; }
+  .scard {
+    background: var(--dark2); border: 1px solid var(--border);
+    border-radius: 14px; padding: 26px;
+  }
+  .scard h4 { font-size: 11px; font-weight: 700; text-transform: uppercase;
+    letter-spacing: .6px; color: var(--muted); margin-bottom: 10px; }
+  .scard .big { font-family: 'Unbounded', sans-serif; font-size: 50px; font-weight: 900; line-height: 1; margin-bottom: 6px; }
+  .scard .lbl { font-size: 13px; color: var(--muted); }
+  .scard.before .big { color: var(--red); }
+  .scard.after  .big { color: var(--green); }
+
+  /* bar rows */
+  .bar { margin: 18px 0; }
+  .bar-top { display: flex; justify-content: space-between; font-size: 13px;
+    color: var(--muted); margin-bottom: 5px; }
+  .bar-top span:last-child { font-weight: 700; color: var(--text); }
+  .track { height: 7px; background: rgba(255,255,255,.07); border-radius: 99px; overflow: hidden; }
+  .fill { height: 100%; border-radius: 99px; width: 0;
+    transition: width 1.6s cubic-bezier(.16,1,.3,1); }
+  .fill-a { background: linear-gradient(90deg, var(--teal), var(--green)); }
+
+  /* sources */
+  .src { display: grid; grid-template-columns: 32px 1fr; gap: 14px;
+    padding: 14px 0; border-bottom: 1px solid var(--border); align-items: start; }
+  .src:last-child { border-bottom: none; }
+  .src-n { font-family: 'Unbounded', sans-serif; font-size: 11px; font-weight: 700;
+    color: var(--teal); padding-top: 2px; }
+  .src-body { font-size: 13.5px; line-height: 1.65; }
+  .src-au { color: var(--text); font-weight: 700; }
+  .src-ti { color: var(--muted); font-style: italic; }
+  .src-jo { color: var(--teal); font-size: 12.5px; }
+  .src-link { font-size: 12px; color: var(--teal-d); word-break: break-all; }
+
+  /* conclusion grid */
+  .conc { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 13px; margin-top: 22px; }
+  .cc {
+    background: var(--dark2); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px;
+    border-top: 3px solid var(--teal);
+    transition: transform .2s;
+  }
+  .cc:hover { transform: translateY(-3px); }
+  .cc-n { font-family: 'Unbounded', sans-serif; font-size: 10px; font-weight: 700;
+    color: var(--teal); letter-spacing: 1px; margin-bottom: 9px; }
+  .cc-t { font-size: 13.5px; color: var(--muted); line-height: 1.65; }
+  .cc-t strong { color: var(--text); }
+
+  /* footer */
+  footer { border-top: 1px solid var(--border); padding: 40px 0;
+    text-align: center; font-size: 12.5px; color: var(--muted); }
+
+  /* fade animations */
+  .fi { opacity: 0; transform: translateY(26px);
+    transition: opacity .65s ease, transform .65s ease; }
+  .fi.v { opacity: 1; transform: none; }
+
+  @media (max-width: 600px) {
+    nav { padding: 0 14px; gap: 16px; }
+    .wrap { padding: 0 14px; }
+    .ingr-hdr, .ingr { grid-template-columns: 1fr; }
+    .ingr-hdr { display: none; }
+    .survey-duo { grid-template-columns: 1fr; }
+    .kpi-row { gap: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="bar"></div>
+
+<nav>
+  <span class="nav-brand">БАД: наука?</span>
+  <div class="nav-links">
+    <a href="#intro">Введение</a>
+    <a href="#theory">Теория</a>
+    <a href="#research">Анализ</a>
+    <a href="#survey">Опрос</a>
+    <a href="#conclusion">Выводы</a>
+    <a href="#sources">Источники</a>
+  </div>
+</nav>
+
+<!-- ═══════════════════ HERO ═══════════════════ -->
+<section class="hero" id="top">
+  <div class="hero-glow"></div>
+  <div class="shape s1"></div>
+  <div class="shape s2"></div>
+  <div class="shape s3"></div>
+  <div class="shape s4"></div>
+  <div class="shape s5"></div>
+  <div class="wrap">
+    <p class="hero-school">
+      Муниципальное общеобразовательное учреждение «Средняя общеобразовательная школа № 9», г. Обнинск
+    </p>
+    <div class="hero-tag">Исследовательский проект · 2026</div>
+    <h1>БАДы для<br>похудения:<br><em>маркетинг</em><br>или наука?</h1>
+    <p class="hero-sub">Полная версия исследования. Анализ 15 добавок, 24 компонента, данные РКИ, реальные риски.</p>
+    <p class="hero-author">
+      Выполнила: <strong>Комарова Ярослава Сергеевна</strong>, 10 «А» класс<br>
+      Научный руководитель: <strong>Ивкова Елена Александровна</strong>, учитель химии
+    </p>
+    <div class="kpi-row">
+      <div class="kpi"><span class="kpi-n">15</span><span class="kpi-l">продуктов проанализировано</span></div>
+      <div class="kpi"><span class="kpi-n">24</span><span class="kpi-l">уникальных компонента выявлено</span></div>
+      <div class="kpi"><span class="kpi-n">30%</span><span class="kpi-l">знали правду до исследования</span></div>
+      <div class="kpi"><span class="kpi-n">91%</span><span class="kpi-l">знали после ознакомления с памяткой</span></div>
+    </div>
+    <div class="down-hint">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+      Прокрутите вниз
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ ВВЕДЕНИЕ ═══════════════════ -->
+<section id="intro">
+  <div class="wrap">
+    <div class="s-tag fi">01 — Введение</div>
+    <h2 class="title fi">Почему это важно<br>знать каждому</h2>
+
+    <div class="q fi">
+      <p>«За броскими заявлениями нередко скрывается отсутствие каких-либо клинических доказательств, а в ряде случаев — реальная угроза здоровью.»</p>
+    </div>
+
+    <p class="body fi">Биологически активные добавки для снижения веса — один из наиболее быстро растущих сегментов потребительского рынка России. Красочная реклама обещает избавление от лишних килограммов без диет и физических нагрузок, апеллируя к «натуральности» состава и «научным разработкам».</p>
+
+    <p class="body fi">В ходе проекта изучены <strong>15 наиболее востребованных продуктов</strong> российского рынка: капсулы, порошки и «дренажные» напитки. Проект адресован сверстникам и взрослым, которые нуждаются в объективных инструментах для оценки рекламы.</p>
+
+    <div class="cards fi">
+      <div class="card">
+        <div class="card-ico">📈</div>
+        <h4>Рынок БАД: 150 млрд ₽</h4>
+        <p>По данным DSM Group, объём российского рынка БАД в 2024 году превысил 150 млрд рублей. Около 10% — сегмент «для снижения веса».</p>
+      </div>
+      <div class="card">
+        <div class="card-ico">⚠️</div>
+        <h4>40% жалоб</h4>
+        <p>По данным Роспотребнадзора (2023), более 40% жалоб на БАД связаны именно с добавками для снижения веса.</p>
+      </div>
+      <div class="card">
+        <div class="card-ico">❓</div>
+        <h4>60% не знают разницы</h4>
+        <p>Около 60% потребителей не знают о принципиальном отличии БАД от лекарственных препаратов в части доказательства эффективности.</p>
+      </div>
+      <div class="card">
+        <div class="card-ico">🎯</div>
+        <h4>Цель проекта</h4>
+        <p>Провести комплексный анализ состава и механизмов действия популярных БАД и разработать критерии их оценки для потребителя.</p>
+      </div>
+    </div>
+
+    <h3 class="sub fi">Гипотеза</h3>
+    <div class="q fi">
+      <p>Большинство компонентов популярных БАД для похудения не имеют убедительной доказательной базы, а часть из них несёт скрытую угрозу здоровью потребителей.</p>
+    </div>
+    <p class="body fi"><strong>Спойлер: гипотеза полностью подтверждена.</strong></p>
+
+    <h3 class="sub fi">Методы исследования</h3>
+    <ul class="bl fi">
+      <li>Анализ научной литературы — базы PubMed, Cochrane Library</li>
+      <li>Сравнительный анализ состава 15 коммерческих продуктов</li>
+      <li>Классификация и систематизация 24 выявленных компонентов</li>
+      <li>Анкетирование 23 человек (14–45 лет) до и после памятки</li>
+      <li>Статистическая обработка результатов</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════ ТЕОРИЯ ═══════════════════ -->
+<section id="theory">
+  <div class="wrap">
+    <div class="s-tag fi">02 — Теория</div>
+    <h2 class="title fi">БАД ≠ Лекарство.<br>Разница, о которой молчит реклама</h2>
+
+    <p class="body fi">Корень проблемы — в <strong>регуляторной асимметрии</strong>: производитель БАД не обязан доказывать эффективность своего продукта, тогда как потребитель воспринимает рекламные заявления как свидетельство научной обоснованности.</p>
+
+    <div class="tbl-wrap fi">
+      <table>
+        <thead>
+          <tr>
+            <th>Критерий</th>
+            <th class="c-drug">💊 Лекарственный препарат</th>
+            <th class="c-bad">📦 БАД</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Доказательство эффективности</td>
+            <td>Обязательно — РКИ, метаанализы, независимые испытания</td>
+            <td><strong>Не требуется совсем</strong></td>
+          </tr>
+          <tr>
+            <td>Регистрация</td>
+            <td>Клинические испытания I–III фаз</td>
+            <td>Достаточно подтверждения безопасности состава</td>
+          </tr>
+          <tr>
+            <td>Допустимые надписи</td>
+            <td>«Лечит», «снижает», «устраняет» — при наличии доказательств</td>
+            <td>Только «поддерживает», «способствует»</td>
+          </tr>
+          <tr>
+            <td>Надзор</td>
+            <td>Строгий GMP, Минздрав</td>
+            <td>Роспотребнадзор, менее строгий</td>
+          </tr>
+          <tr>
+            <td>Ответственность за эффект</td>
+            <td>Юридическая ответственность производителя</td>
+            <td>Существенно ниже</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3 class="sub fi">Рекламные приёмы, которые вводят в заблуждение</h3>
+    <div class="cards fi">
+      <div class="card">
+        <div class="card-ico">🧪</div>
+        <h4>«Клинически доказано»</h4>
+        <p>Без указания, кем, где и на скольких людях. Часто ссылка ведёт на исследование, не связанное с конкретным продуктом.</p>
+      </div>
+      <div class="card">
+        <div class="card-ico">🌿</div>
+        <h4>«Натуральный = безопасный»</h4>
+        <p>Ложная ассоциация. Мышьяк, никотин и сибутрамин — тоже «натуральные» по происхождению. Натуральность ≠ безопасность.</p>
+      </div>
+      <div class="card">
+        <div class="card-ico">⚡</div>
+        <h4>«Ускоряет метаболизм»</h4>
+        <p>+80–150 ккал/день термогенеза — реальный эффект кофеина. Но без дефицита калорий этого недостаточно для значимого снижения веса.</p>
+      </div>
+      <div class="card">
+        <div class="card-ico">📸</div>
+        <h4>Фото «до и после»</h4>
+        <p>Без контроля питания, физической активности и независимой верификации. Не являются научным доказательством.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ ИССЛЕДОВАНИЕ ═══════════════════ -->
+<section id="research">
+  <div class="wrap">
+    <div class="s-tag fi">03 — Исследовательская часть</div>
+    <h2 class="title fi">24 компонента.<br>Три категории. Три зоны риска</h2>
+
+    <p class="body fi">В ходе анализа состава 15 продуктов выявлено <strong>24 уникальных активных компонента</strong>. По механизму воздействия они разделены на три категории, по доказательной базе — на три зоны риска.</p>
+
+    <h3 class="sub fi">Категории по механизму действия</h3>
+    <div class="cards fi">
+      <div class="card">
+        <div class="card-ico">🔥</div>
+        <h4>Категория I — Стимуляторы метаболизма</h4>
+        <p>Термогеники и липотропики: кофеин, EGCG, L-карнитин, синефрин. Ускоряют расщепление жиров или повышают энергозатраты.</p>
+      </div>
+      <div class="card">
+        <div class="card-ico">💧</div>
+        <h4>Категория II — Имитаторы похудения</h4>
+        <p>Диуретики и слабительные: сенна, ортосифон, фенхель, ревень. <em>Не воздействуют на жировую ткань.</em> Создают иллюзию через вывод жидкости.</p>
+      </div>
+      <div class="card">
+        <div class="card-ico">🧠</div>
+        <h4>Категория III — Анорексигены</h4>
+        <p>Подавители аппетита: 5-HTP, глюкоманнан, и — незадекларированный — сибутрамин. Наиболее опасная категория.</p>
+      </div>
+    </div>
+
+    <!-- ZONES -->
+    <h3 class="sub fi">Анализ эффективности и безопасности по зонам</h3>
+
+    <!-- GREEN -->
+    <div class="zone zone-g fi">
+      <div class="zone-head">
+        <span class="zone-emo">🟢</span>
+        <span class="zone-name">Зелёная зона — условно эффективные</span>
+      </div>
+      <p class="zone-desc">Метаанализы подтверждают небольшой реальный эффект. Без дефицита калорий и физической активности клинически значимого снижения веса не зафиксировано.</p>
+      <div class="ingr-hdr"><span>Компонент</span><span>Доказанный эффект</span><span>Ограничения и риски</span></div>
+      <div class="ingr-list">
+        <div class="ingr">
+          <span class="ingr-n">Кофеин / EGCG<br>(зелёный чай)</span>
+          <span class="ingr-e">Повышение суточного расхода энергии на 80–150 ккал. При регулярном применении развивается толерантность и эффект нивелируется.</span>
+          <span class="ingr-r">Тахикардия при передозировке. Противопоказан при гипертонии и аритмии. Привыкание.</span>
+        </div>
+        <div class="ingr">
+          <span class="ingr-n">L-карнитин</span>
+          <span class="ingr-e">Участвует в транспорте жирных кислот в митохондрии — но только при аэробных нагрузках. Метаанализ Fielding et al. (2018): без кардиотренировок — статистически незначимый эффект.</span>
+          <span class="ingr-r">Без физической нагрузки абсолютно неэффективен для снижения веса.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- YELLOW -->
+    <div class="zone zone-y fi">
+      <div class="zone-head">
+        <span class="zone-emo">🟡</span>
+        <span class="zone-name">Жёлтая зона — маркетинговые «пустышки»</span>
+      </div>
+      <p class="zone-desc">Не превосходят плацебо в качественных рандомизированных исследованиях. Покупатель платит за надежду, а не за результат.</p>
+      <div class="ingr-hdr"><span>Компонент</span><span>Реальный эффект</span><span>Что говорит наука</span></div>
+      <div class="ingr-list">
+        <div class="ingr">
+          <span class="ingr-n">Бромелаин<br>(ананас, ягоды годжи)</span>
+          <span class="ingr-e">Является протеолитическим ферментом — расщепляет <em>белки</em>, а не жиры. При пероральном приёме денатурируется в кислой среде желудка.</span>
+          <span class="ingr-r">Не достигает подкожно-жировой клетчатки в активной форме. Эффект для похудения — нулевой.</span>
+        </div>
+        <div class="ingr">
+          <span class="ingr-n">Гарциния камбоджийская (ГЛК)</span>
+          <span class="ingr-e">Систематический обзор Onakpoya et al. (2011) и последующие метаанализы: не выявлено клинически значимого снижения веса vs плацебо.</span>
+          <span class="ingr-r">В 2009 году FDA выпустила предупреждение о случаях острой гепатотоксичности.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- RED -->
+    <div class="zone zone-r fi">
+      <div class="zone-head">
+        <span class="zone-emo">🔴</span>
+        <span class="zone-name">Красная зона — скрытая угроза</span>
+      </div>
+      <div class="warn">
+        <span class="warn-ico">⚠️</span>
+        <span class="warn-txt">Эти вещества имеют <strong>задокументированные серьёзные побочные эффекты</strong>. Сибутрамин <strong>запрещён в России и ЕС с 2010 года</strong>, однако обнаруживается примерно в <strong>30% образцов «натуральных» капсул</strong>, продаваемых через интернет (данные Роспотребнадзора).</span>
+      </div>
+      <div class="ingr-hdr"><span>Компонент</span><span>Механизм угрозы</span><span>Задокументированные последствия</span></div>
+      <div class="ingr-list">
+        <div class="ingr">
+          <span class="ingr-n">Экстракт сенны<br>(Cassia angustifolia)</span>
+          <span class="ingr-e">Обнаружен в 9 из 10 исследованных «фито-чаёв». «Похудение» — обезвоживание вследствие диареи и усиленного диуреза. Жировая масса не уменьшается.</span>
+          <span class="ingr-r">Синдром «ленивого кишечника», гипокалиемия, нарушение электролитного баланса. EMA: не более 1–2 недель только по назначению врача.</span>
+        </div>
+        <div class="ingr">
+          <span class="ingr-n">Сибутрамин<br>(Sibutraminum)</span>
+          <span class="ingr-e">Рецептурный ингибитор обратного захвата серотонина и норадреналина. <strong>Запрещён в России и ЕС с 2010 года</strong> (исследование SCOUT, N Engl J Med, 2010).</span>
+          <span class="ingr-r">Доказанное повышение риска инфаркта, инсульта, психоза и тяжёлой депрессии. Обнаруживается в ~30% нелегальных «натуральных» капсул для похудения.</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- MATRIX TABLE -->
+    <h3 class="sub fi">Сравнительная таблица — 6 ключевых ингредиентов</h3>
+    <div class="tbl-wrap fi">
+      <table>
+        <thead>
+          <tr>
+            <th>Компонент</th>
+            <th>Группа</th>
+            <th>Зона</th>
+            <th>Доказанный эффект</th>
+            <th>Риски</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Кофеин / зелёный чай</td>
+            <td>Термогеник</td>
+            <td><span class="zbadge zb-g">🟢 Зелёная</span></td>
+            <td>Слабый термогенез; привыкание</td>
+            <td>Тахикардия при передозировке</td>
+          </tr>
+          <tr>
+            <td>L-карнитин</td>
+            <td>Липотропик</td>
+            <td><span class="zbadge zb-g">🟢 Зелёная</span></td>
+            <td>Эффект только при кардионагрузке</td>
+            <td>Без нагрузки — неэффективен</td>
+          </tr>
+          <tr>
+            <td>Бромелаин (ананас, годжи)</td>
+            <td>Фермент</td>
+            <td><span class="zbadge zb-y">🟡 Жёлтая</span></td>
+            <td>Не подтверждён у людей</td>
+            <td>Расщепляет белок, а не жир</td>
+          </tr>
+          <tr>
+            <td>Гарциния камбоджийская</td>
+            <td>Раст. экстракт</td>
+            <td><span class="zbadge zb-y">🟡 Жёлтая</span></td>
+            <td>Не отличается от плацебо (РКИ)</td>
+            <td>Гепатотоксичность (FDA)</td>
+          </tr>
+          <tr>
+            <td>Экстракт сенны</td>
+            <td>Слабительное</td>
+            <td><span class="zbadge zb-r">🔴 Красная</span></td>
+            <td>Снижение веса за счёт обезвоживания</td>
+            <td>Атония кишечника; гипокалиемия</td>
+          </tr>
+          <tr>
+            <td>Сибутрамин</td>
+            <td>Анорексиген</td>
+            <td><span class="zbadge zb-r">🔴 Красная</span></td>
+            <td>Подавление аппетита (запрещён с 2010)</td>
+            <td>Инфаркт; инсульт; психоз; депрессия</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ ОПРОС ═══════════════════ -->
+<section id="survey">
+  <div class="wrap">
+    <div class="s-tag fi">04 — Практическая часть</div>
+    <h2 class="title fi">Что знают потребители?<br>Результаты анкетирования</h2>
+
+    <p class="body fi">Анкетирование среди знакомых и родственников в возрасте 14–45 лет (23 человека). Анкета из 8 вопросов распространялась через мессенджер. Проводилась входная и итоговая диагностика — <strong>до и после изучения информационной листовки</strong>.</p>
+
+    <div class="survey-duo fi">
+      <div class="scard before">
+        <h4>До памятки</h4>
+        <div class="big">30%</div>
+        <div class="lbl">правильно определили статус БАД<br>(7 из 23 человек)</div>
+      </div>
+      <div class="scard after">
+        <h4>После памятки</h4>
+        <div class="big">91%</div>
+        <div class="lbl">правильно определили статус БАД<br>(21 из 23 человек)</div>
+      </div>
+    </div>
+
+    <div style="margin-top:28px" class="fi">
+      <div class="bar">
+        <div class="bar-top"><span>Знали о рисках сибутрамина в «натуральных» добавках</span><span>9% → 87% (+78 п.п.)</span></div>
+        <div class="track"><div class="fill fill-a" data-w="87"></div></div>
+      </div>
+      <div class="bar">
+        <div class="bar-top"><span>Готовы проверять состав добавок перед покупкой</span><span>17% → 83% (+66 п.п.)</span></div>
+        <div class="track"><div class="fill fill-a" data-w="83"></div></div>
+      </div>
+      <div class="bar">
+        <div class="bar-top"><span>Правильно определили статус БАД</span><span>30% → 91% (+61 п.п.)</span></div>
+        <div class="track"><div class="fill fill-a" data-w="91"></div></div>
+      </div>
+      <div class="bar">
+        <div class="bar-top"><span>Изменили оценку безопасности сенны при длит. приёме</span><span>26% → 87%</span></div>
+        <div class="track"><div class="fill fill-a" data-w="87"></div></div>
+      </div>
+    </div>
+
+    <div class="q fi" style="margin-top:28px">
+      <p>Средний прирост правильных ответов составил около <strong>67 процентных пунктов</strong> — за одно ознакомление с листовкой. Это свидетельствует о высокой практической ценности разработанного просветительского материала.</p>
+    </div>
+
+    <h3 class="sub fi">Практические материалы проекта</h3>
+    <ul class="bl fi">
+      <li><strong>Памятка потребителя формата А4</strong> «Как читать состав добавки для похудения» — таблица зон риска, пошаговый алгоритм проверки состава, QR-код на документ с полной версией проекта + источники + расширенные таблицы.</li>
+      <li><strong>Анкетирование</strong> 23 человек до и после — для оценки реального уровня осведомлённости и эффективности памятки.</li>
+      <li><strong>Распространение</strong> листовки с возможностью задать вопросы. Часть участников самостоятельно переслала электронную версию своим знакомым.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════ ВЫВОДЫ ═══════════════════ -->
+<section id="conclusion">
+  <div class="wrap">
+    <div class="s-tag fi">05 — Заключение</div>
+    <h2 class="title fi">Что показало<br>исследование</h2>
+
+    <div class="conc fi">
+      <div class="cc">
+        <div class="cc-n">ВЫВОД 01</div>
+        <div class="cc-t"><strong>Гипотеза подтверждена:</strong> большинство компонентов популярных БАД не имеют убедительной клинической доказательной базы.</div>
+      </div>
+      <div class="cc">
+        <div class="cc-n">ВЫВОД 02</div>
+        <div class="cc-t">Две категории веществ — <strong>сенна при систематическом применении</strong> и <strong>сибутрамин</strong> — представляют реальную угрозу здоровью.</div>
+      </div>
+      <div class="cc">
+        <div class="cc-n">ВЫВОД 03</div>
+        <div class="cc-t">Корень проблемы — в <strong>регуляторной асимметрии</strong>: производитель не обязан доказывать эффективность, но потребитель воспринимает рекламу как науку.</div>
+      </div>
+      <div class="cc">
+        <div class="cc-n">ВЫВОД 04</div>
+        <div class="cc-t">После знакомства с материалами проекта доля учащихся, готовых критически оценивать состав добавок, <strong>выросла с 19% до 84%</strong>.</div>
+      </div>
+      <div class="cc">
+        <div class="cc-n">ВЫВОД 05</div>
+        <div class="cc-t">Средний прирост правильных ответов — <strong>67 п.п.</strong> Просветительская листовка показала высокую эффективность как инструмент.</div>
+      </div>
+      <div class="cc" style="border-top-color: var(--green)">
+        <div class="cc-n" style="color:var(--green)">РЕКОМЕНДАЦИИ</div>
+        <div class="cc-t">Убедитесь в регистрации как БАД. Ищите РКИ на людях (PubMed). Избегайте сенны при длительном приёме. Осторожно с нелегальными капсулами. <strong>Ни один БАД не заменяет сбалансированного питания и активности.</strong></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════ ИСТОЧНИКИ ═══════════════════ -->
+<section id="sources">
+  <div class="wrap">
+    <div class="s-tag fi">06 — Список источников</div>
+    <h2 class="title fi">10 источников,<br>использованных в проекте</h2>
+
+    <div class="fi">
+      <div class="src">
+        <span class="src-n">01</span>
+        <div class="src-body">
+          <div class="src-au">Федеральный закон от 02.01.2000 № 29-ФЗ</div>
+          <div class="src-ti">«О качестве и безопасности пищевых продуктов»</div>
+          <div class="src-link">consultant.ru/document/cons_doc_LAW_25584/</div>
+        </div>
+      </div>
+      <div class="src">
+        <span class="src-n">02</span>
+        <div class="src-body">
+          <div class="src-au">Технический регламент Таможенного союза ТР ТС 021/2011</div>
+          <div class="src-ti">«О безопасности пищевой продукции»</div>
+          <div class="src-link">docs.cntd.ru/document/902320560</div>
+        </div>
+      </div>
+      <div class="src">
+        <span class="src-n">03</span>
+        <div class="src-body">
+          <div class="src-au">Onakpoya I., Hung S.K., Perry R. et al.</div>
+          <div class="src-ti">The Use of Garcinia Extract (Hydroxycitric Acid) as a Weight loss Supplement: A Systematic Review and Meta-Analysis of Randomised Clinical Trials</div>
+          <div class="src-jo">Journal of Obesity, 2011 · DOI: 10.1155/2011/509038</div>
+          <div class="src-link">pubmed.ncbi.nlm.nih.gov/21197150/</div>
+        </div>
+      </div>
+      <div class="src">
+        <span class="src-n">04</span>
+        <div class="src-body">
+          <div class="src-au">Hursel R., Viechtbauer W., Westerterp-Plantenga M.S.</div>
+          <div class="src-ti">The effects of green tea on weight loss and weight maintenance: a meta-analysis</div>
+          <div class="src-jo">International Journal of Obesity, 2009 · DOI: 10.1038/ijo.2009.135</div>
+          <div class="src-link">pubmed.ncbi.nlm.nih.gov/19597519/</div>
+        </div>
+      </div>
+      <div class="src">
+        <span class="src-n">05</span>
+        <div class="src-body">
+          <div class="src-au">Fielding R., Riede L., Lugo J.P., Bellamine A.</div>
+          <div class="src-ti">L-Carnitine Supplementation in Recovery after Exercise</div>
+          <div class="src-jo">Nutrients, 2018, Vol. 10(3) · DOI: 10.3390/nu10030349</div>
+          <div class="src-link">pubmed.ncbi.nlm.nih.gov/29534031/</div>
+        </div>
+      </div>
+      <div class="src">
+        <span class="src-n">06</span>
+        <div class="src-body">
+          <div class="src-au">James W.P.T. et al.</div>
+          <div class="src-ti">Effect of sibutramine on cardiovascular outcomes in overweight and obese subjects (SCOUT)</div>
+          <div class="src-jo">New England Journal of Medicine, 2010, Vol. 363(10) · DOI: 10.1056/NEJMoa1003114</div>
+          <div class="src-link">pubmed.ncbi.nlm.nih.gov/20818901/</div>
+        </div>
+      </div>
+      <div class="src">
+        <span class="src-n">07</span>
+        <div class="src-body">
+          <div class="src-au">European Medicines Agency (EMA / HMPC)</div>
+          <div class="src-ti">Final European Union herbal monograph on Senna alexandrina Mill. (Cassia angustifolia Vahl), fructus</div>
+          <div class="src-jo">EMA, 2018</div>
+          <div class="src-link">ema.europa.eu/en/medicines/herbal/sennae-fructus</div>
+        </div>
+      </div>
+      <div class="src">
+        <span class="src-n">08</span>
+        <div class="src-body">
+          <div class="src-au">Роспотребнадзор</div>
+          <div class="src-ti">Доклад о результатах контрольно-надзорной деятельности в сфере оборота БАД за 2022–2023 гг.</div>
+          <div class="src-jo">М., 2024</div>
+          <div class="src-link">rospotrebnadzor.ru</div>
+        </div>
+      </div>
+      <div class="src">
+        <span class="src-n">09</span>
+        <div class="src-body">
+          <div class="src-au">DSM Group</div>
+          <div class="src-ti">Российский рынок биологически активных добавок: аналитический отчёт — 2024</div>
+          <div class="src-jo">М.: DSM Group, 2024</div>
+          <div class="src-link">dsm.ru</div>
+        </div>
+      </div>
+      <div class="src">
+        <span class="src-n">10</span>
+        <div class="src-body">
+          <div class="src-au">Phung O.J., Baker W.L., Matthews L.J. et al.</div>
+          <div class="src-ti">Effect of green tea catechins with or without caffeine on anthropometric measures</div>
+          <div class="src-jo">The American Journal of Clinical Nutrition, 2010, Vol. 91(1) · DOI: 10.3945/ajcn.2009.28157</div>
+          <div class="src-link">pubmed.ncbi.nlm.nih.gov/19906797/</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <p>МОУ «СОШ № 9», г. Обнинск · Комарова Ярослава Сергеевна, 10 «А» · 2026<br>
+    <em>Исследовательский проект выполнен в учебных целях. Информация не является медицинской консультацией.</em></p>
+  </div>
+</footer>
+
+<script>
+  // progress bar
+  window.addEventListener('scroll', () => {
+    const d = document.documentElement;
+    document.getElementById('bar').style.width =
+      (window.scrollY / (d.scrollHeight - d.clientHeight) * 100) + '%';
+  });
+
+  // fade in
+  const io = new IntersectionObserver((ents) => {
+    ents.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('v'), i * 55);
+        io.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+  document.querySelectorAll('.fi').forEach(el => io.observe(el));
+
+  // animate bars
+  const bio = new IntersectionObserver((ents) => {
+    ents.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.querySelectorAll('.fill').forEach(f => {
+          f.style.width = f.dataset.w + '%';
+        });
+        bio.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.25 });
+  document.querySelectorAll('.fi').forEach(el => {
+    if (el.querySelector('.fill')) bio.observe(el);
+  });
+</script>
+</body>
+</html>
